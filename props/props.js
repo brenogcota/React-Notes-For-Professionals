@@ -1,9 +1,113 @@
 /*
+    ** Props em Reação ** 
+
+    Introdução
+    props são usados para passar dados e métodos de um componente pai para um componente filho.
+    Coisas interessantes sobre adereços
+
+        1 Eles são imutáveis.
+        2 Eles nos permitem criar componentes reutilizáveis.
+
+
+*/
+class Parent extends React.Component{
+    doSomething(){
+        console.log("Parent component");
+    }
+
+    render() {
+        return <div>
+                    <Child
+                        text="This is the child number 1"
+                        title="Title 1"
+                        onClick={this.doSomething} 
+                    />
+                    <Child
+                        text="This is the child number 2"
+                        title="Title 2"
+                        onClick={this.doSomething} 
+                    />
+                </div>
+    }
+}
+
+class Child extends React.Component{
+    render() {
+
+    return <div>
+                <h1>{this.props.title}</h1>
+                <h2>{this.props.text}</h2>
+            </div>
+    }
+}
+
+
+/*
+    propTypes permite que você especifique quais props seus componentes precisam e o tipo que eles devem ser. Seu componente
+    funcionará sem definir propTypes , mas é uma boa prática defini-los, pois isso tornará seu componente mais
+    legível, atua como documentação para outros desenvolvedores que estão lendo seu componente e, durante o desenvolvimento,
+    O React irá avisá-lo se você tentar definir um suporte que seja de um tipo diferente da definição que você definiu para ele.
+    Alguns primitivos propTypes e comumente utilizáveis propTypes são -
+
+    optionalArray: React.PropTypes.array,
+    optionalBool: React.PropTypes.bool,
+    optionalFunc: React.PropTypes.func,
+    optionalNumber: React.PropTypes.number,
+    optionalObject: React.PropTypes.object,
+    optionalString: React.PropTypes.string,
+    optionalSymbol: React.PropTypes.symbol
+
+    Se você anexar isRequired a qualquer propType, então esse prop deve ser fornecido ao criar a instância desse
+    componente. Se você não fornecer os required propTypes, a instância do componente não poderá ser criada.
+
+*/
+//  ES5
+var MyClass = React.createClass({
+    propTypes: {
+        randomObject: React.PropTypes.object,
+        callback: React.PropTypes.func.isRequired,
+    }
+}
+
+//  ES6
+class MyClass extends React.Component {}
+MyClass.propTypes = {
+    randomObject: React.PropTypes.object,
+    callback: React.PropTypes.func.isRequired,
+};
+
+// ES7
+class MyClass extends React.Component {
+    static propTypes = {
+        randomObject: React.PropTypes.object,
+        callback: React.PropTypes.func.isRequired,
+    };
+}
+
+/*
+    Validação de adereços mais complexos
+
+    Da mesma forma, PropTypes permite que você especifique uma validação mais complexa
+*/
+//Validando um objeto
+randomObject: React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    text: React.PropTypes.string,
+}).isRequired,
+   
+//Validando em uma série de objetos
+arrayOfObjects: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    text: React.PropTypes.string,
+})).isRequired,
+   
+
+/*
     ** Props **
 
-    Os adereços são uma forma de passar informações para um componente React, eles podem ter qualquer tipo, incluindo funções -
+    Os props são uma forma de passar informações para um componente React, eles podem ter qualquer tipo, incluindo funções -
     às vezes referido como callbacks.
-    Em JSX, os adereços são passados com a sintaxe do atributo
+    Em JSX, os props são passados com a sintaxe do atributo
 
     <ID do usuário do MeuComponente = {123} />
     Dentro da definição para o ID do usuário MyComponent agora estará acessível a partir do objeto props
@@ -16,7 +120,7 @@
 
 */
 
-// É importante definir todos os adereços , seus tipos e, quando aplicável, seus valores padrão:
+// É importante definir todos os props , seus tipos e, quando aplicável, seus valores padrão:
 MyComponent.propTypes = {
     someObject: React.PropTypes.object,
     userID: React.PropTypes.number.isRequired,
